@@ -10,3 +10,6 @@ via Serial (USB).
 The Java Client will communicate to FG via HTTP properties protocol.
 
 Every step during development will be documented within the project wiki.
+
+
+Last Update: 2017-05.09
