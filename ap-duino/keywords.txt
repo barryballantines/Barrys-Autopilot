@@ -1,0 +1,6 @@
+# Types...
+AutoPilot		KEYWORD1
+# Functions...
+setHeading		KEYWORD2
+getHeading		KEYWORD2
+updateDisplay	KEYWORD2
