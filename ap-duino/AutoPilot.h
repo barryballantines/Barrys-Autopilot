@@ -38,6 +38,16 @@ public:
     ~AutoPilot();
 
     /**
+     * setup method for the Heading rotary encoder
+     * 
+     * Both pins will be be configured as INPUT_PULLUP
+     * 
+     * @param pinA - the first pin of the rotary encoder, typically an interrupt
+     * @param pinB - the second pin of the rotary encoder
+     */
+    void setupHeadingRotaryEncoder(byte pinA, byte pinB);
+    
+    /**
      * set heading for the A/P
      * 
      * calling this method does not update the heading display.
@@ -60,13 +70,31 @@ public:
      * Arduino sketch file.
      */
     void updateDisplay();
+    
+    /**
+     * call this method on interrupt of _headingEncoderPinA
+     */
+    void onHeadingRotaryEncoderInterrupt();
 
 private:
 
     /** the current heading, that will be displayed the next time
      *  updateDisplay() is called.
      */
-    int _heading;
+    volatile int _heading;
+    
+    // === PINS ===
+    
+    /** 
+     * the Pin A of the heading rotary encoder.
+     * 
+     * this pin must be an interrupt pin
+     */
+    byte _headingEncoderPinA;
+    /**
+     * the Pin B of the heading rotary encoder.
+     */
+    byte _headingEncoderPinB;
 
 };
 
