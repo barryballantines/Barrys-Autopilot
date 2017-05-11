@@ -37,6 +37,21 @@ public:
      */
     ~AutoPilot();
 
+    /** 
+     *  setup shift register pins 
+     *  
+     *  @param clockPin
+     *  @param latchPin
+     */
+    void setupShiftRegisterControl(byte clockPin, byte latchPin);
+
+    /**
+     * setup Heading display data pin
+     * 
+     * @param dataPin
+     */
+    void setupHeadingDisplayDataPin(byte dataPin);
+    
     /**
      * setup method for the Heading rotary encoder
      * 
@@ -46,7 +61,7 @@ public:
      * @param pinB - the second pin of the rotary encoder
      */
     void setupHeadingRotaryEncoder(byte pinA, byte pinB);
-    
+
     /**
      * set heading for the A/P
      * 
@@ -76,6 +91,8 @@ public:
      */
     void onHeadingRotaryEncoderInterrupt();
 
+    void testHeadingDisplay();
+
 private:
 
     /** the current heading, that will be displayed the next time
@@ -91,10 +108,24 @@ private:
      * this pin must be an interrupt pin
      */
     byte _headingEncoderPinA;
+
     /**
      * the Pin B of the heading rotary encoder.
      */
     byte _headingEncoderPinB;
+
+    /**
+     * heading data pin
+     */
+    byte _headingDisplayDataPin; 
+
+    // --- shift register control pins ---
+
+    byte _latchPin;
+    byte _clockPin;
+
+    
+    
 
 };
 
