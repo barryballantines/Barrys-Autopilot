@@ -2,6 +2,7 @@
 #define AUTOPILOT_H
 
 #include <Arduino.h>
+
 /**
  * This library encapsulates all A/P specific logic.
  * 
@@ -42,8 +43,10 @@ public:
      *  
      *  @param clockPin
      *  @param latchPin
+     *  @param clearPin
+     *  @param outputEnablePin
      */
-    void setupShiftRegisterControl(byte clockPin, byte latchPin);
+    void setupShiftRegisterControl(byte clockPin, byte latchPin, byte clearPin, byte outputEnablePin);
 
     /**
      * setup Heading display data pin
@@ -121,12 +124,46 @@ private:
 
     // --- shift register control pins ---
 
-    byte _latchPin;
-    byte _clockPin;
-
-    
-    
-
+    byte _shiftRegLatchPin;
+    byte _shiftRegClockPin;
+    byte _shiftRegOutputEnablePin;
+    byte _shiftRegClearPin;
 };
+
+// HELPER FUNCTIONS...
+
+// segment byte order: a b c d e f g DP
+const byte DIGIT_TO_BYTES[] = {
+  B11111100, // 0
+  B01100000, // 1
+  B11011010, // 2
+  B11110010, // 3
+  B01100110, // 4
+  B10110110, // 5
+  B10111110, // 6
+  B11100000, // 7
+  B11111110, // 8
+  B11110110, // 9
+  B00000000, // SPACE
+  B00000010, // -
+  B00000001, // .
+};
+
+/** this helper function translates a digit into a byte
+ *  to be used for displaying the digit on a 7 segment led display
+ */
+byte digitToByte(int digit);
+
+/**
+ * translates an unsigned integer into an array of bytes to be used 
+ * for a display of 7 segment led displays
+ * 
+ * The integer 345 will be translated into the array
+ * { digitToByte(0), digitToByte(0), digitToByte(3), digitToByte(4), digitToByte(5) }
+ * 
+ * @param input the input value in the range of 0 - 99999 (higher numbers will result in "-----")
+ * @param output the byte array of length 5, used to hold the result
+ */
+void translateUnsignedIntToByteArray(unsigned int input, byte output[5]);
 
 #endif
