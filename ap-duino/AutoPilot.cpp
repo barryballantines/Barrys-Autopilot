@@ -31,6 +31,8 @@ void AutoPilot::setupShiftRegisterControl(byte clockPin, byte latchPin, byte cle
   digitalWrite(_shiftRegOutputEnablePin, LOW);
 }
 
+// === HEADING ===
+
 void AutoPilot::setupHeadingDisplayDataPin(byte dataPin) {
   _headingDisplayDataPin = dataPin;
   pinMode(_headingDisplayDataPin, OUTPUT);
@@ -42,6 +44,23 @@ void AutoPilot::setupHeadingRotaryEncoder(byte pinA, byte pinB) {
     _headingEncoderPinB = pinB;
     pinMode(_headingEncoderPinA, INPUT_PULLUP);
     pinMode(_headingEncoderPinB, INPUT_PULLUP);
+}
+
+void AutoPilot::setupHeadingModeActivateBtn(byte hdgModeActivatePin) {
+  _headingModeActivatePin = hdgModeActivatePin;
+  pinMode(_headingModeActivatePin, INPUT_PULLUP);
+}
+
+void AutoPilot::setupHeadingHoldBtn(byte hdgHoldBtnPin) {
+  _headingHoldBtnPin = hdgHoldBtnPin;
+  pinMode(_headingHoldBtnPin, INPUT_PULLUP);
+    
+}
+
+void AutoPilot::setupHeadingModeLED(byte hdgModeLEDPin) {
+  _headingModeLEDPin = hdgModeLEDPin;
+  pinMode(_headingModeLEDPin, OUTPUT);
+  digitalWrite(_headingModeLEDPin, LOW);
 }
 
 void AutoPilot::setHeading(int hdg) {

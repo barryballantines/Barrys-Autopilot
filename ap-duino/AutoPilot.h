@@ -48,6 +48,8 @@ public:
      */
     void setupShiftRegisterControl(byte clockPin, byte latchPin, byte clearPin, byte outputEnablePin);
 
+    // === HEADING === 
+    
     /**
      * setup Heading display data pin
      * 
@@ -64,6 +66,26 @@ public:
      * @param pinB - the second pin of the rotary encoder
      */
     void setupHeadingRotaryEncoder(byte pinA, byte pinB);
+
+    /**
+     * setup method for Heading activate push button
+     * 
+     * Pin will be configured as INPUT_PULLUP
+     */
+    void setupHeadingModeActivateBtn(byte hdgModeActivatePin);
+
+    /**
+     * setup method for Heading Hold push button
+     * 
+     * Pin will be INPUT_PULLUP
+     */
+    void setupHeadingHoldBtn(byte hdgHoldBtnPin);
+
+    /**
+     * setup method for Heading Mode LED
+     * Pin will be OUTPUT
+     */
+    void setupHeadingModeLED(byte hdgModeLEDPin);
 
     /**
      * set heading for the A/P
@@ -104,23 +126,16 @@ private:
     volatile int _heading;
     
     // === PINS ===
+
+    // --- HEADING ---
+
     
-    /** 
-     * the Pin A of the heading rotary encoder.
-     * 
-     * this pin must be an interrupt pin
-     */
     byte _headingEncoderPinA;
-
-    /**
-     * the Pin B of the heading rotary encoder.
-     */
     byte _headingEncoderPinB;
-
-    /**
-     * heading data pin
-     */
     byte _headingDisplayDataPin; 
+    byte _headingModeActivatePin;
+    byte _headingHoldBtnPin;
+    byte _headingModeLEDPin;
 
     // --- shift register control pins ---
 
