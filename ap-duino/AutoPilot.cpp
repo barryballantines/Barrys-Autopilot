@@ -6,7 +6,6 @@
 
 byte headingBytes[4];
 
-
 AutoPilot::AutoPilot() {
     // nothing to do yet...
     _commandInput.reserve(200);
@@ -67,6 +66,7 @@ void AutoPilot::setupHeadingModeLED(byte hdgModeLEDPin) {
 
 void AutoPilot::setHeading(int hdg) {
     _heading = (hdg+360) % 360;
+    _headingDirty = true;
 }
 
 int AutoPilot::getHeading() {
@@ -109,6 +109,14 @@ void AutoPilot::testHeadingDisplay() {
 
 // === SERIAL COMM ===
 
+void AutoPilot::sendChanges() {
+  if (_headingDirty) {
+    Serial.print("[hdg:");
+    Serial.print(_heading);
+    Serial.println("}");
+    _headingDirty = false;
+  }
+}
 
 void AutoPilot::onSerialEvent() {
 

@@ -121,6 +121,7 @@ public:
 
     // === SERIAL COMMUNICATION ===
 
+    void sendChanges();
     void onSerialEvent();
     void executeCommand();
 
@@ -134,11 +135,12 @@ private:
     // === SERIAL COMM ===
 
     String _commandInput = "";
+
+    boolean _headingDirty = false;
     
     // === PINS ===
 
     // --- HEADING ---
-
     
     byte _headingEncoderPinA;
     byte _headingEncoderPinB;

@@ -12,6 +12,7 @@
 
 
 AutoPilot ap;
+int lastHeading = -1;
 
 void setup() {
   // put your setup code here, to run once:
@@ -23,17 +24,20 @@ void setup() {
   //attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, RISING);
 
   Serial.begin(9600);
+  while(!Serial) {
+    ;
+  }
 }
 
 void loop() {
+  ap.onSerialEvent();
   ap.updateDisplay();
+  //ap.sendChanges();
+  
 }
 
 void interruptRotaryEncoder() {
   ap.onHeadingRotaryEncoderInterrupt();
 }
 
-void serialEvent() {
-  ap.onSerialEvent();
-}
 
