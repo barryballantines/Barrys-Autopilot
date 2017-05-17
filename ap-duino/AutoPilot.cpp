@@ -6,8 +6,10 @@
 
 byte headingBytes[4];
 
+
 AutoPilot::AutoPilot() {
     // nothing to do yet...
+    _commandInput.reserve(200);
 }
 
 AutoPilot::~AutoPilot() {
@@ -102,6 +104,32 @@ void AutoPilot::testHeadingDisplay() {
     shiftOut(_headingDisplayDataPin, _shiftRegClockPin, LSBFIRST, segments);
     digitalWrite(_shiftRegLatchPin, HIGH);
     delay(1000);
+  }
+}
+
+// === SERIAL COMM ===
+
+
+void AutoPilot::onSerialEvent() {
+
+  while (Serial.available()) {
+    char in = (char) Serial.read();
+    if (in == '{') {
+      _commandInput = "";
+    }
+    else if (in == '}') {
+      executeCommand();
+    }
+    else {
+      _commandInput += in;
+    }
+  }
+}
+
+void AutoPilot::executeCommand() {
+  if (_commandInput.startsWith("hdg:")) {
+    int value = (int) _commandInput.substring(4).toInt();
+    setHeading(value);
   }
 }
 

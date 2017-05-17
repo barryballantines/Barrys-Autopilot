@@ -20,25 +20,20 @@ void setup() {
   ap.setupHeadingRotaryEncoder(HEADING_CONTROLLER_A_PIN,HEADING_CONTROLLER_B_PIN);
   ap.setHeading(0);
 
-  attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, RISING);
+  //attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, RISING);
 
   Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  if (false) {
-    // testing the heading rotary encoder
-    int hdg = ap.getHeading();
-    Serial.print("Heading: ");
-    Serial.println(hdg);
-  }
   ap.updateDisplay();
-  int hdg = ap.getHeading() + 3;
-  ap.setHeading(hdg);
-  delay(1000);
 }
 
 void interruptRotaryEncoder() {
   ap.onHeadingRotaryEncoderInterrupt();
 }
+
+void serialEvent() {
+  ap.onSerialEvent();
+}
+

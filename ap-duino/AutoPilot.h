@@ -118,12 +118,22 @@ public:
 
     void testHeadingDisplay();
 
+
+    // === SERIAL COMMUNICATION ===
+
+    void onSerialEvent();
+    void executeCommand();
+
 private:
 
     /** the current heading, that will be displayed the next time
      *  updateDisplay() is called.
      */
     volatile int _heading;
+
+    // === SERIAL COMM ===
+
+    String _commandInput = "";
     
     // === PINS ===
 
