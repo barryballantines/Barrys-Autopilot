@@ -117,11 +117,17 @@ void AutoPilot::testHeadingDisplay() {
 
 void AutoPilot::sendChanges() {
   if (_headingDirty) {
-    Serial.print("[hdg:");
-    Serial.print(_heading);
-    Serial.println("}");
+    sendCommand("hdg", _heading);
     _headingDirty = false;
   }
+}
+
+void AutoPilot::sendCommand(const char * name, const long value) {
+  Serial.print('{');
+  Serial.print(name);
+  Serial.print(':');
+  Serial.print(value);
+  Serial.println('}');
 }
 
 void AutoPilot::onSerialEvent() {

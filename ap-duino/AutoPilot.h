@@ -123,7 +123,6 @@ public:
 
     void sendChanges();
     void onSerialEvent();
-    void executeCommand();
 
 private:
 
@@ -131,12 +130,14 @@ private:
      *  updateDisplay() is called.
      */
     volatile int _heading;
+    String _commandInput = "";
+    boolean _headingDirty = false;
 
     // === SERIAL COMM ===
+    
+    void executeCommand();
+    void sendCommand(const char * name, const long value);
 
-    String _commandInput = "";
-
-    boolean _headingDirty = false;
     
     // === PINS ===
 

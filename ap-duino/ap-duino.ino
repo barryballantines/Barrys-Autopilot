@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   ap.onSerialEvent();
   ap.updateDisplay();
-  //ap.sendChanges();
+  ap.sendChanges();
   
 }
 
