@@ -1,10 +1,12 @@
 #include "AutoPilot.h"
 
+#define SR_BYTE_BUFFER_SIZE 5
+
 #define SPACE 10
 #define MINUS 11
 #define DOT   12
 
-byte headingBytes[4];
+byte headingBytes[SR_BYTE_BUFFER_SIZE];
 
 AutoPilot::AutoPilot() {
     // nothing to do yet...
@@ -74,13 +76,17 @@ int AutoPilot::getHeading() {
 }
 
 void AutoPilot::updateDisplay() {
-    // heading...
-    translateUnsignedIntToByteArray(_heading, headingBytes);
-
+    // === STORAGE REGISTER LOW ===
     digitalWrite(_shiftRegLatchPin, LOW);
-    for (int i=0; i<5; i++) {
+   
+    // === HEADING ===
+  
+    translateUnsignedIntToByteArray(_heading, headingBytes);
+    for (int i; i<SR_BYTE_BUFFER_SIZE; i++) {
       shiftOut(_headingDisplayDataPin, _shiftRegClockPin, LSBFIRST, headingBytes[i]);
     }
+    
+    // === STORAGE REGISTER HIGH ===
     digitalWrite(_shiftRegLatchPin, HIGH);
 }
 
@@ -151,16 +157,16 @@ byte digitToByte(int digit) {
   }
 }
 
-void translateUnsignedIntToByteArray(unsigned int input, byte output[5]) {
+void translateUnsignedIntToByteArray(unsigned int input, byte output[SR_BYTE_BUFFER_SIZE]) {
   if (input > 99999) {
-    for (int i=0; i<5; i++) {
+    for (int i=0; i<SR_BYTE_BUFFER_SIZE; i++) {
       output[i] = B00000010;
     }
   }
   else {
     unsigned int modulo = 10000;
     unsigned int value = input;
-    for (int i=0; i<5; i++) {
+    for (int i=0; i<SR_BYTE_BUFFER_SIZE; i++) {
       int digit = value / modulo;
       output[i] = digitToByte(digit);
       value = value - digit * modulo;
