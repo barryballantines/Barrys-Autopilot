@@ -107,29 +107,8 @@ void AutoPilot::updateDisplay() {
 }
 
 void AutoPilot::readButtonStateChanges() {
-  // === HDG MODE BUTTON PRESSED ===
-  byte state = digitalRead(_headingModeActivatePin);
-  if (state==LOW && !_headingModeActivateBtnPressed) {
-    // BTN pressed
-    _headingModeActivateBtnPressed = true;
-    _headingModeActivateBtnPressedDirty = true;
-  }
-  else if (_headingModeActivateBtnPressed && state==HIGH) {
-    // BTN released
-    _headingModeActivateBtnPressed = false;
-  }
-
-  // === HDG MODE BUTTON PRESSED ===
-  state = digitalRead(_headingHoldBtnPin);
-  if (state==LOW && !_headingHoldBtnPressed) {
-    // BTN pressed
-    _headingHoldBtnPressed = true;
-    _headingHoldBtnPressedDirty = true;
-  }
-  else if (_headingHoldBtnPressed && state==HIGH) {
-    // BTN released
-    _headingHoldBtnPressed = false;
-  }
+  readPushBtnStateChanges(_headingModeActivatePin, _headingModeActivateBtnPressed, _headingModeActivateBtnPressedDirty);
+  readPushBtnStateChanges(_headingHoldBtnPin, _headingHoldBtnPressed, _headingHoldBtnPressedDirty);
 }
 
 int lastHeadingEncoderPinAState = HIGH;
@@ -247,6 +226,20 @@ void translateUnsignedIntToByteArray(unsigned int input, byte output[SR_BYTE_BUF
       value = value - digit * modulo;
       modulo = modulo / 10;
     }
+  }
+}
+
+
+void readPushBtnStateChanges(const byte & btnPin, boolean & buttonState, boolean & buttonStateDirty) {
+  byte state = digitalRead(btnPin);
+  if (state==LOW && !buttonState) {
+    // BTN pressed
+    buttonState = true;
+    buttonStateDirty = true;
+  }
+  else if (buttonState && state==HIGH) {
+    // BTN released
+    buttonState = false;
   }
 }
 

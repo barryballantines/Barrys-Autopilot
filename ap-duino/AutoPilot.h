@@ -159,7 +159,6 @@ private:
     void executeCommand();
     void sendCommand(const char * name, const long value);
 
-    
     // === PINS ===
 
     // --- HEADING ---
@@ -214,5 +213,7 @@ byte digitToByte(int digit);
  * @param output the byte array of length 5, used to hold the result
  */
 void translateUnsignedIntToByteArray(unsigned int input, byte output[5]);
+
+void readPushBtnStateChanges(const byte& btnPin, boolean& buttonState, boolean& buttonStateDirty);
 
 #endif
