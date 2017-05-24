@@ -115,6 +115,11 @@ public:
      * Arduino sketch file.
      */
     void updateDisplay();
+
+    /**
+     * read input pins for button state changes
+     */
+    void readButtonStateChanges();
     
     /**
      * call this method on interrupt of _headingEncoderPinA
@@ -140,6 +145,9 @@ private:
     
     boolean _headingModeActive = false;
     boolean _headingModeActiveDirty = false;
+
+    boolean _headingModeActivateBtnPressed = false;
+    boolean _headingModeActivateBtnPressedDirty = false;
     
     String _commandInput = "";
 

@@ -9,8 +9,9 @@
 #define HEADING_DISPLAY_SER 11
 #define HEADING_CONTROLLER_A_PIN 3
 #define HEADING_CONTROLLER_B_PIN 4
-
 #define HEADING_MODE_ACTIVE_LED_PIN 22
+#define HEADING_MODE_ACTIVATE_BTN_PIN 24
+
 
 
 AutoPilot ap;
@@ -22,6 +23,7 @@ void setup() {
   ap.setupHeadingDisplayDataPin(HEADING_DISPLAY_SER);
   ap.setupHeadingRotaryEncoder(HEADING_CONTROLLER_A_PIN,HEADING_CONTROLLER_B_PIN);
   ap.setupHeadingModeLED(HEADING_MODE_ACTIVE_LED_PIN);
+  ap.setupHeadingModeActivateBtn(HEADING_MODE_ACTIVATE_BTN_PIN);
   ap.setHeading(0);
 
   attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, CHANGE);
@@ -34,6 +36,7 @@ void setup() {
 
 void loop() {
   ap.onSerialEvent();
+  ap.readButtonStateChanges();
   ap.updateDisplay();
   ap.sendChanges();
   

@@ -106,6 +106,20 @@ void AutoPilot::updateDisplay() {
     digitalWrite(_shiftRegLatchPin, HIGH);
 }
 
+void AutoPilot::readButtonStateChanges() {
+  // === HDG MODE BUTTON PRESSED ===
+  byte state = digitalRead(_headingModeActivatePin);
+  if (state==LOW && !_headingModeActivateBtnPressed) {
+    // BTN pressed
+    _headingModeActivateBtnPressed = true;
+    _headingModeActivateBtnPressedDirty = true;
+  }
+  else if (_headingModeActivateBtnPressed && state==HIGH) {
+    // BTN released
+    _headingModeActivateBtnPressed = false;
+  }
+}
+
 int lastHeadingEncoderPinAState = HIGH;
 int lastHeadingEncoderPinBState = HIGH;
 
@@ -145,6 +159,10 @@ void AutoPilot::sendChanges() {
   if (_headingDirty) {
     sendCommand("hdg", _heading);
     _headingDirty = false;
+  }
+  if (_headingModeActivateBtnPressedDirty) {
+    sendCommand("hdgModeActivated", 1);
+    _headingModeActivateBtnPressedDirty = false;
   }
 }
 
