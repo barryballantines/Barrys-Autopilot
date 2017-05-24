@@ -21,7 +21,7 @@ void setup() {
   ap.setupHeadingRotaryEncoder(HEADING_CONTROLLER_A_PIN,HEADING_CONTROLLER_B_PIN);
   ap.setHeading(0);
 
-  //attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, RISING);
+  attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, RISING);
 
   Serial.begin(9600);
   while(!Serial) {
