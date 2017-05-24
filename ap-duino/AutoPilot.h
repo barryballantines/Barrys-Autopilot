@@ -148,6 +148,9 @@ private:
 
     boolean _headingModeActivateBtnPressed = false;
     boolean _headingModeActivateBtnPressedDirty = false;
+
+    boolean _headingHoldBtnPressed = false;
+    boolean _headingHoldBtnPressedDirty = false;
     
     String _commandInput = "";
 
