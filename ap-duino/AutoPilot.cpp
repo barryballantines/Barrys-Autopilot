@@ -90,15 +90,25 @@ void AutoPilot::updateDisplay() {
     digitalWrite(_shiftRegLatchPin, HIGH);
 }
 
+int lastHeadingEncoderPinAState = HIGH;
+int lastHeadingEncoderPinBState = HIGH;
 
 void AutoPilot::onHeadingRotaryEncoderInterrupt() {
     int valA = digitalRead(_headingEncoderPinA);
     int valB = digitalRead(_headingEncoderPinB);
-    if (valA == valB) {
-        setHeading(_heading - 1);
-    }
-    else {
-        setHeading(_heading + 1);
+    long now = millis();
+    if (valA!=lastHeadingEncoderPinAState 
+        || valB!=lastHeadingEncoderPinBState) {
+      int internalHeadingCounter = getHeading();
+      lastHeadingEncoderPinAState=valA;
+      lastHeadingEncoderPinBState=valB;
+      if (valA == valB) {
+        internalHeadingCounter++;
+      }
+      else {
+        internalHeadingCounter--;
+      }
+      setHeading(internalHeadingCounter);
     }
 }
 
