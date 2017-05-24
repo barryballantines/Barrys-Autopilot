@@ -64,6 +64,7 @@ void AutoPilot::setupHeadingModeLED(byte hdgModeLEDPin) {
   _headingModeLEDPin = hdgModeLEDPin;
   pinMode(_headingModeLEDPin, OUTPUT);
   digitalWrite(_headingModeLEDPin, LOW);
+  _headingModeActive = false;
 }
 
 void AutoPilot::setHeading(int hdg) {
@@ -75,7 +76,22 @@ int AutoPilot::getHeading() {
     return _heading;
 }
 
+void AutoPilot::setHeadingModeActive(boolean active) {
+  if (_headingModeActive != active) {
+    _headingModeActive = active;
+    _headingModeActiveDirty = true;
+  }
+}
+
 void AutoPilot::updateDisplay() {
+    // === HEADING MODE ACTIVE ===
+    
+    if (_headingModeActiveDirty) {
+      digitalWrite(_headingModeLEDPin, _headingModeActive ? HIGH : LOW);
+      _headingModeActiveDirty = false;
+    }
+
+    
     // === STORAGE REGISTER LOW ===
     digitalWrite(_shiftRegLatchPin, LOW);
    
@@ -160,6 +176,15 @@ void AutoPilot::executeCommand() {
   if (_commandInput.startsWith("hdg:")) {
     int value = (int) _commandInput.substring(4).toInt();
     setHeading(value);
+  }
+  else if (_commandInput.startsWith("hdgModeActive:")) {
+    int value = _commandInput.substring(14).toInt();
+    if (value==0) {
+      setHeadingModeActive(false);
+    }
+    else {
+      setHeadingModeActive(true);
+    }
   }
 }
 

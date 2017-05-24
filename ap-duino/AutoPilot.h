@@ -96,6 +96,11 @@ public:
      */
     void setHeading(int hdg);
 
+    /** 
+     *  set heading mode active
+     */
+    void setHeadingModeActive(boolean active);
+
     /**
      * gets the heading (0-359) in degrees 
      * 
@@ -130,8 +135,13 @@ private:
      *  updateDisplay() is called.
      */
     volatile int _heading;
-    String _commandInput = "";
     boolean _headingDirty = false;
+
+    
+    boolean _headingModeActive = false;
+    boolean _headingModeActiveDirty = false;
+    
+    String _commandInput = "";
 
     // === SERIAL COMM ===
     

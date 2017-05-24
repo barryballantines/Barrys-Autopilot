@@ -10,6 +10,8 @@
 #define HEADING_CONTROLLER_A_PIN 3
 #define HEADING_CONTROLLER_B_PIN 4
 
+#define HEADING_MODE_ACTIVE_LED_PIN 22
+
 
 AutoPilot ap;
 int lastHeading = -1;
@@ -19,6 +21,7 @@ void setup() {
   ap.setupShiftRegisterControl(SR_CLOCK_PIN,SR_LATCH_PIN, SR_CLEAR_PIN, SR_OUTPUT_ENABLE_PIN);
   ap.setupHeadingDisplayDataPin(HEADING_DISPLAY_SER);
   ap.setupHeadingRotaryEncoder(HEADING_CONTROLLER_A_PIN,HEADING_CONTROLLER_B_PIN);
+  ap.setupHeadingModeLED(HEADING_MODE_ACTIVE_LED_PIN);
   ap.setHeading(0);
 
   attachInterrupt(digitalPinToInterrupt(3), interruptRotaryEncoder, CHANGE);
