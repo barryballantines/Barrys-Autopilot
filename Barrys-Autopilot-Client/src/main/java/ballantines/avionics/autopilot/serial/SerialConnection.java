@@ -23,7 +23,7 @@ public class SerialConnection {
   
   public static final int TIMEOUT = 6000;
   
-  public final Pipe<Boolean> statusPipe = Pipe.newInstance("configurationForm.serverConfig");
+  public final Pipe<Boolean> statusPipe = Pipe.newInstance("serialConnection.status");
   
   private SerialConfig config;
   
