@@ -14,6 +14,9 @@
     <deploy.root.directory>${basedir}/target/distribution</deploy.root.directory>
     <deploy.snapshots.directory>${deploy.root.directory}/snapshots</deploy.snapshots.directory>
     <deploy.releases.directory>${deploy.root.directory}/releases</deploy.releases.directory>
+    
+    <slf4jVersion>1.6.1</slf4jVersion>
+    <logback.version>1.1.2</logback.version>
   </properties>
 	
   <organization>
@@ -70,6 +73,24 @@
       	<groupId>com.fazecast</groupId>
       	<artifactId>jSerialComm</artifactId>
       	<version>1.3.11</version>
+      </dependency>
+      
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>${slf4jVersion}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
       </dependency>
 	</dependencies>
   </dependencyManagement>

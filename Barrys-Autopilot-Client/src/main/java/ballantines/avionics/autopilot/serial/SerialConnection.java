@@ -10,14 +10,17 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import java.io.BufferedOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mbuse
  */
 public class SerialConnection {
+  
+  private final static Logger LOG = LoggerFactory.getLogger(SerialConnection.class);
+  
   public static final int TIMEOUT = 6000;
   
   public final Pipe<Boolean> statusPipe = Pipe.newInstance("configurationForm.serverConfig");
@@ -38,8 +41,7 @@ public class SerialConnection {
       SerialPort serialPort = SerialPort.getCommPort(config.port);
       serialPort.setBaudRate(config.baudRate);
       serialPort.openPort();
-      //LOG.info("Connecting to Arduino on port " + port);
-      System.out.println("Connecting to Arduino on port " + config.port);
+      LOG.info("Connecting to Arduino on port " + config.port);
       serialPort.addDataListener(new SerialPortDataListener() {
         @Override
         public int getListeningEvents() {
@@ -73,13 +75,12 @@ public class SerialConnection {
         connected = true;
       }
       else {
-        // LOG.error("Failed to open COM port");
-        System.out.println("Failed to open COM port");
+        LOG.error("Failed to open COM port");
         restart();
       }
     } catch (Exception e) {
       connected = false;
-      //LOG.error("Failed to open port '" + port + "': " + e.toString());
+      LOG.error("Failed to open port '" + config.port + "'.", e.toString());
       restart();
     }
     finally {
@@ -107,8 +108,7 @@ public class SerialConnection {
    */
   public void restart() {
     shutdown();
-    //LOG.info("Terminating serial connecting, waiting for reconnect attempt...");
-    System.out.println("Terminating serial connecting, waiting for reconnect attemp...");
+    LOG.info("Terminating serial connecting, waiting for reconnect attempt...");
     try {
       Thread.sleep(TIMEOUT);
       connect();
@@ -125,11 +125,10 @@ public class SerialConnection {
 
       try {
         cmd = commands.substring(commands.lastIndexOf("{"), commands.lastIndexOf("}") + 1).trim();
-        // LOG.info("Received command '" + cmd + "'");
-        System.out.println("Receiving command '" + cmd + "'");
+        LOG.info("Received command '" + cmd + "'");
         // TODO: execute command...
       } catch (Exception e) {
-        //LOG.error("Failed to parse JSON: " + e.getMessage(), e);
+        LOG.error("Failed to parse JSON: " + e.getMessage(), e);
       }
     }
   }
