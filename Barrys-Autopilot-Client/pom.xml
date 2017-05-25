@@ -15,11 +15,28 @@
 
 	
   <dependencies>
+  
+    <dependency>
+      <groupId>ballantines.avionics</groupId>
+      <artifactId>pipes</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>ballantines.avionics</groupId>
+      <artifactId>flightgear-connect-api</artifactId>
+    </dependency>
+
+	<dependency>
+		<groupId>com.fazecast</groupId>
+		<artifactId>jSerialComm</artifactId>
+	</dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+	
   </dependencies>
 
 </project>
