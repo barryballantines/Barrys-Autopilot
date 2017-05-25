@@ -12,8 +12,11 @@
   <packaging>jar</packaging>
   
   <name>Barry`s Autopilot Client</name>
-
-	
+  
+  <properties> 
+    <deploy.root.directory>${basedir}/../target/distribution</deploy.root.directory>
+  </properties>
+  
   <dependencies>
   
     <dependency>
@@ -38,5 +41,5 @@
     </dependency>
 	
   </dependencies>
-
+  
 </project>

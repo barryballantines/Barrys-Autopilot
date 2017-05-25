@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <deploy.root.directory>${project.build.directory}/distribution</deploy.root.directory>
+    <deploy.root.directory>${basedir}/target/distribution</deploy.root.directory>
     <deploy.snapshots.directory>${deploy.root.directory}/snapshots</deploy.snapshots.directory>
     <deploy.releases.directory>${deploy.root.directory}/releases</deploy.releases.directory>
   </properties>
