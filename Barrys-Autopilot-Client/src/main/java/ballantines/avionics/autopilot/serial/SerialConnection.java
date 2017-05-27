@@ -24,6 +24,7 @@ public class SerialConnection {
   public static final int TIMEOUT = 6000;
   
   public final Pipe<Boolean> statusPipe = Pipe.newInstance("serialConnection.status");
+  public final Pipe<SerialCommand> commandPipe = Pipe.newInstance("commandPipe");
   
   private SerialConfig config;
   
@@ -124,8 +125,15 @@ public class SerialConnection {
       String cmd = null;
 
       try {
-        cmd = commands.substring(commands.lastIndexOf("{"), commands.lastIndexOf("}") + 1).trim();
+        cmd = commands.substring(commands.lastIndexOf("{")+1, commands.lastIndexOf("}")).trim();
         LOG.info("Received command '" + cmd + "'");
+        int separatorIndex = cmd.indexOf(':');
+        if (separatorIndex>-1) {
+          String key = cmd.substring(0, separatorIndex).trim();
+          int value = Integer.valueOf(cmd.substring(separatorIndex+1).trim());
+          SerialCommand command = new SerialCommand(key, value);
+          commandPipe.set(command);
+        }
         // TODO: execute command...
       } catch (Exception e) {
         LOG.error("Failed to parse JSON: " + e.getMessage(), e);
