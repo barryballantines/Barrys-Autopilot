@@ -6,6 +6,7 @@
 package ballantines.avionics.autopilot.serial;
 
 import ballantines.avionics.pipes.Pipe;
+import ballantines.avionics.pipes.PipeUpdateListener;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
@@ -17,14 +18,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author mbuse
  */
-public class SerialConnection {
+public class SerialConnection implements PipeUpdateListener {
   
   private final static Logger LOG = LoggerFactory.getLogger(SerialConnection.class);
   
   public static final int TIMEOUT = 6000;
   
-  public final Pipe<Boolean> statusPipe = Pipe.newInstance("serialConnection.status");
-  public final Pipe<SerialCommand> commandPipe = Pipe.newInstance("commandPipe");
+  public final Pipe<Boolean> statusPipe = Pipe.newInstance("serialConnection.status", this);
+  public final Pipe<SerialCommand> commandPipe = Pipe.newInstance("commandPipe", this);
   
   private SerialConfig config;
   
@@ -140,4 +141,11 @@ public class SerialConnection {
       }
     }
   }
+
+  @Override
+  public void pipeUpdated(Pipe pipe) {
+    LOG.debug(pipe.toString());
+  }
+   
+  
 }

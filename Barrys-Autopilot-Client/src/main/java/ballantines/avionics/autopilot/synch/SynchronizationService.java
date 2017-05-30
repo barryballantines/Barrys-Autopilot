@@ -9,17 +9,20 @@ import ballantines.avionics.autopilot.flightgear.FlightgearAutopilot;
 import ballantines.avionics.autopilot.serial.SerialCommand;
 import ballantines.avionics.pipes.Pipe;
 import ballantines.avionics.pipes.PipeUpdateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author mbuse
  */
 public class SynchronizationService implements PipeUpdateListener {
+  private final static Logger LOG = LoggerFactory.getLogger(SynchronizationService.class);
   
-  public Pipe<Object> flightGearInputPipe = Pipe.newInstance("synchronizationService.flightgear.in");
-  public Pipe<Object> flightGearOutputPipe = Pipe.newInstance("sychronizationService.flightgear.out");
-  public Pipe<SerialCommand> serialInputPipe = Pipe.newInstance("synchronizationServer.serial.in");
-  public Pipe<Object> serialOutputPipe = Pipe.newInstance("synchronizationService.serial.out");
+  public Pipe<Object> flightGearInputPipe = Pipe.newInstance("synchronizationService.flightgear.in", this);
+  public Pipe<Object> flightGearOutputPipe = Pipe.newInstance("sychronizationService.flightgear.out", this);
+  public Pipe<SerialCommand> serialInputPipe = Pipe.newInstance("synchronizationServer.serial.in", this);
+  public Pipe<Object> serialOutputPipe = Pipe.newInstance("synchronizationService.serial.out", this);
 
   private FlightgearAutopilot fgAutopilot;
 
@@ -29,6 +32,7 @@ public class SynchronizationService implements PipeUpdateListener {
   
   @Override
   public void pipeUpdated(Pipe pipe) {
+    LOG.debug(pipe.toString());
     if (pipe == serialInputPipe) {
       SerialCommand cmd = serialInputPipe.get();
       if ("hdg".equals(cmd.getKey())) {

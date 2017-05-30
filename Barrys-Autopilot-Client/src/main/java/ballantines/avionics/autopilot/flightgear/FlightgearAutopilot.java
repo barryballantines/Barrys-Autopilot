@@ -15,6 +15,10 @@ public class FlightgearAutopilot {
   
   private PropertyService fgPropertyService;
   
+  public FlightgearAutopilot(PropertyService service) {
+    this.fgPropertyService = service;
+  }
+  
   public void setHeadingDeg(int hdg) {
     fgPropertyService.writeProperty(AutopilotProperties.HEADING_DEG_PROPERTY, hdg);
   }
