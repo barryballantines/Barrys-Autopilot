@@ -35,8 +35,16 @@ public class SynchronizationService implements PipeUpdateListener {
     LOG.debug(pipe.toString());
     if (pipe == serialInputPipe) {
       SerialCommand cmd = serialInputPipe.get();
-      if ("hdg".equals(cmd.getKey())) {
-        fgAutopilot.setHeadingDeg(cmd.getValue());
+      if (cmd!=null) {
+        if ("hdg".equals(cmd.getKey())) {
+          fgAutopilot.setHeadingDeg(cmd.getValue());
+        }
+        else if ("hdgModeActivated".equals(cmd.getKey())) {
+          fgAutopilot.toggleHeadingSelect();
+        }
+        else if ("hdgHoldActivated".equals(cmd.getKey())) {
+          fgAutopilot.toggleHeadingHold();
+        }
       }
     }
   }

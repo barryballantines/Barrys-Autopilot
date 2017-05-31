@@ -134,6 +134,7 @@ public class SerialConnection implements PipeUpdateListener {
           int value = Integer.valueOf(cmd.substring(separatorIndex+1).trim());
           SerialCommand command = new SerialCommand(key, value);
           commandPipe.set(command);
+          commandPipe.set(null);
         }
         // TODO: execute command...
       } catch (Exception e) {

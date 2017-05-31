@@ -62,6 +62,13 @@ public class SerialCommand {
     }
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "{"+key+ ":" + value + "}";
+  }
+  
+  
   
   
   
