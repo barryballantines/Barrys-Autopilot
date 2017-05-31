@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <generic>
+    <output>
+      <line_separator>newline</line_separator>
+      <var_separator>,</var_separator>
+      <chunk>
+        <name>AP engaged</name>
+        <node>/instrumentation/afds/inputs/AP</node>
+        <type>bool</type>
+        <format>{"ap_engaged":%d</format>
+      </chunk>
+      <chunk>
+        <name>AP disengaged</name>
+        <node>/instrumentation/afds/inputs/AP-disengaged</node>
+        <type>bool</type>
+        <format>,"ap_disengaged":%d</format>
+      </chunk>
+      <chunk>
+        <name>Lateral mode (0: OFF, 1: HDG SEL, 2: HDG HOLD)</name>
+        <node>/instrumentation/afds/inputs/lateral-index</node>
+        <type>int</type>
+        <format>,"lateral-index":%d}</format>
+      </chunk>
+    </output>
+  </generic>
+</PropertyList>        
