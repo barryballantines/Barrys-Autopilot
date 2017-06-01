@@ -7,6 +7,7 @@ package ballantines.avionics.autopilot.synch;
 
 import ballantines.avionics.autopilot.flightgear.FlightgearAutopilot;
 import ballantines.avionics.autopilot.serial.SerialCommand;
+import ballantines.avionics.autopilot.serial.SerialCommands;
 import ballantines.avionics.pipes.Pipe;
 import ballantines.avionics.pipes.PipeUpdateListener;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author mbuse
  */
-public class SynchronizationService implements PipeUpdateListener {
+public class SynchronizationService implements PipeUpdateListener, SerialCommands {
   private final static Logger LOG = LoggerFactory.getLogger(SynchronizationService.class);
   
   public Pipe<Object> flightGearInputPipe = Pipe.newInstance("synchronizationService.flightgear.in", this);
@@ -36,13 +37,13 @@ public class SynchronizationService implements PipeUpdateListener {
     if (pipe == serialInputPipe) {
       SerialCommand cmd = serialInputPipe.get();
       if (cmd!=null) {
-        if ("hdg".equals(cmd.getKey())) {
+        if (HDG.equals(cmd.getKey())) {
           fgAutopilot.setHeadingDeg(cmd.getValue());
         }
-        else if ("hdgSelectPressed".equals(cmd.getKey())) {
+        else if (HDG_SELECT_PRESSED.equals(cmd.getKey())) {
           fgAutopilot.toggleHeadingSelect();
         }
-        else if ("hdgHoldPressed".equals(cmd.getKey())) {
+        else if (HDG_HOLD_PRESSED.equals(cmd.getKey())) {
           fgAutopilot.toggleHeadingHold();
         }
       }
