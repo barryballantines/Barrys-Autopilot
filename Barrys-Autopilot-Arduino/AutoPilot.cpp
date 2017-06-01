@@ -49,22 +49,22 @@ void AutoPilot::setupHeadingRotaryEncoder(byte pinA, byte pinB) {
     pinMode(_headingEncoderPinB, INPUT_PULLUP);
 }
 
-void AutoPilot::setupHeadingModeActivateBtn(byte hdgModeActivatePin) {
-  _headingModeActivatePin = hdgModeActivatePin;
-  pinMode(_headingModeActivatePin, INPUT_PULLUP);
-}
-
-void AutoPilot::setupHeadingHoldBtn(byte hdgHoldBtnPin) {
-  _headingHoldBtnPin = hdgHoldBtnPin;
-  pinMode(_headingHoldBtnPin, INPUT_PULLUP);
+void AutoPilot::setupHeadingSelectBtn(byte pin) {
+  _headingSelectBtnPin = pin;
+  pinMode(_headingSelectBtnPin, INPUT_PULLUP);
     
 }
 
-void AutoPilot::setupHeadingModeLED(byte hdgModeLEDPin) {
-  _headingModeLEDPin = hdgModeLEDPin;
-  pinMode(_headingModeLEDPin, OUTPUT);
-  digitalWrite(_headingModeLEDPin, LOW);
-  _headingModeActive = false;
+void AutoPilot::setupHeadingHoldBtn(byte pin) {
+  _headingHoldBtnPin = pin;
+  pinMode(_headingHoldBtnPin, INPUT_PULLUP);
+}
+
+void AutoPilot::setupHeadingHoldLED(byte hdgModeLEDPin) {
+  _headingHoldLEDPin = hdgModeLEDPin;
+  pinMode(_headingHoldLEDPin, OUTPUT);
+  digitalWrite(_headingHoldLEDPin, LOW);
+  _headingHoldActive = false;
 }
 
 void AutoPilot::setHeading(int hdg) {
@@ -76,19 +76,19 @@ int AutoPilot::getHeading() {
     return _heading;
 }
 
-void AutoPilot::setHeadingModeActive(boolean active) {
-  if (_headingModeActive != active) {
-    _headingModeActive = active;
-    _headingModeActiveDirty = true;
+void AutoPilot::setHeadingHoldActive(boolean active) {
+  if (_headingHoldActive != active) {
+    _headingHoldActive = active;
+    _headingHoldActiveDirty = true;
   }
 }
 
 void AutoPilot::updateDisplay() {
     // === HEADING MODE ACTIVE ===
     
-    if (_headingModeActiveDirty) {
-      digitalWrite(_headingModeLEDPin, _headingModeActive ? HIGH : LOW);
-      _headingModeActiveDirty = false;
+    if (_headingHoldActiveDirty) {
+      digitalWrite(_headingHoldLEDPin, _headingHoldActive ? HIGH : LOW);
+      _headingHoldActiveDirty = false;
     }
 
     
@@ -107,8 +107,8 @@ void AutoPilot::updateDisplay() {
 }
 
 void AutoPilot::readButtonStateChanges() {
-  readPushBtnStateChanges(_headingModeActivatePin, _headingModeActivateBtnPressed, _headingModeActivateBtnPressedDirty);
   readPushBtnStateChanges(_headingHoldBtnPin, _headingHoldBtnPressed, _headingHoldBtnPressedDirty);
+  readPushBtnStateChanges(_headingSelectBtnPin, _headingSelectBtnPressed, _headingSelectBtnPressedDirty);
 }
 
 int lastHeadingEncoderPinAState = HIGH;
@@ -151,13 +151,13 @@ void AutoPilot::sendChanges() {
     sendCommand("hdg", _heading);
     _headingDirty = false;
   }
-  if (_headingModeActivateBtnPressedDirty) {
-    sendCommand("hdgModeActivated", 1);
-    _headingModeActivateBtnPressedDirty = false;
-  }
   if (_headingHoldBtnPressedDirty) {
-    sendCommand("hdgHoldActivated", 1);
+    sendCommand("hdgHoldPressed", 1);
     _headingHoldBtnPressedDirty = false;
+  }
+  if (_headingSelectBtnPressedDirty) {
+    sendCommand("hdgSelectPressed", 1);
+  _headingSelectBtnPressedDirty = false;
   }
 }
 
@@ -190,13 +190,13 @@ void AutoPilot::executeCommand() {
     int value = (int) _commandInput.substring(4).toInt();
     setHeading(value);
   }
-  else if (_commandInput.startsWith("hdgModeActive:")) {
+  else if (_commandInput.startsWith("hdgHoldActive:")) {
     int value = _commandInput.substring(14).toInt();
     if (value==0) {
-      setHeadingModeActive(false);
+      setHeadingHoldActive(false);
     }
     else {
-      setHeadingModeActive(true);
+      setHeadingHoldActive(true);
     }
   }
 }

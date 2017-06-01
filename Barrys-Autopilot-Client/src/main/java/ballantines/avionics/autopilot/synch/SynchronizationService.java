@@ -39,10 +39,10 @@ public class SynchronizationService implements PipeUpdateListener {
         if ("hdg".equals(cmd.getKey())) {
           fgAutopilot.setHeadingDeg(cmd.getValue());
         }
-        else if ("hdgModeActivated".equals(cmd.getKey())) {
+        else if ("hdgSelectPressed".equals(cmd.getKey())) {
           fgAutopilot.toggleHeadingSelect();
         }
-        else if ("hdgHoldActivated".equals(cmd.getKey())) {
+        else if ("hdgHoldPressed".equals(cmd.getKey())) {
           fgAutopilot.toggleHeadingHold();
         }
       }

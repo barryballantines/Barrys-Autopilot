@@ -72,20 +72,20 @@ public:
      * 
      * Pin will be configured as INPUT_PULLUP
      */
-    void setupHeadingModeActivateBtn(byte hdgModeActivatePin);
+    void setupHeadingHoldBtn(byte hdgModeActivatePin);
 
     /**
      * setup method for Heading Hold push button
      * 
      * Pin will be INPUT_PULLUP
      */
-    void setupHeadingHoldBtn(byte hdgHoldBtnPin);
+    void setupHeadingSelectBtn(byte hdgHoldBtnPin);
 
     /**
      * setup method for Heading Mode LED
      * Pin will be OUTPUT
      */
-    void setupHeadingModeLED(byte hdgModeLEDPin);
+    void setupHeadingHoldLED(byte hdgModeLEDPin);
 
     /**
      * set heading for the A/P
@@ -97,9 +97,9 @@ public:
     void setHeading(int hdg);
 
     /** 
-     *  set heading mode active
+     *  set heading hold active
      */
-    void setHeadingModeActive(boolean active);
+    void setHeadingHoldActive(boolean active);
 
     /**
      * gets the heading (0-359) in degrees 
@@ -143,14 +143,14 @@ private:
     boolean _headingDirty = false;
 
     
-    boolean _headingModeActive = false;
-    boolean _headingModeActiveDirty = false;
-
-    boolean _headingModeActivateBtnPressed = false;
-    boolean _headingModeActivateBtnPressedDirty = false;
+    boolean _headingHoldActive = false;
+    boolean _headingHoldActiveDirty = false;
 
     boolean _headingHoldBtnPressed = false;
     boolean _headingHoldBtnPressedDirty = false;
+
+    boolean _headingSelectBtnPressed = false;
+    boolean _headingSelectBtnPressedDirty = false;
     
     String _commandInput = "";
 
@@ -166,9 +166,9 @@ private:
     byte _headingEncoderPinA;
     byte _headingEncoderPinB;
     byte _headingDisplayDataPin; 
-    byte _headingModeActivatePin;
+    byte _headingSelectBtnPin;
     byte _headingHoldBtnPin;
-    byte _headingModeLEDPin;
+    byte _headingHoldLEDPin;
 
     // --- shift register control pins ---
 
