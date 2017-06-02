@@ -50,14 +50,12 @@ void AutoPilot::setupHeadingRotaryEncoder(byte pinA, byte pinB) {
 }
 
 void AutoPilot::setupHeadingSelectBtn(byte pin) {
-  _headingSelectBtnPin = pin;
-  pinMode(_headingSelectBtnPin, INPUT_PULLUP);
+  _headingSelectBtn.setup(pin, "hdgSelectPressed");
     
 }
 
 void AutoPilot::setupHeadingHoldBtn(byte pin) {
-  _headingHoldBtnPin = pin;
-  pinMode(_headingHoldBtnPin, INPUT_PULLUP);
+  _headingHoldBtn.setup(pin, "hdgHoldPressed");
 }
 
 void AutoPilot::setupHeadingHoldLED(byte hdgModeLEDPin) {
@@ -107,8 +105,8 @@ void AutoPilot::updateDisplay() {
 }
 
 void AutoPilot::readButtonStateChanges() {
-  readPushBtnStateChanges(_headingHoldBtnPin, _headingHoldBtnPressed, _headingHoldBtnPressedDirty);
-  readPushBtnStateChanges(_headingSelectBtnPin, _headingSelectBtnPressed, _headingSelectBtnPressedDirty);
+  _headingHoldBtn.readButtonState();
+  _headingSelectBtn.readButtonState();
 }
 
 int lastHeadingEncoderPinAState = HIGH;
@@ -151,14 +149,15 @@ void AutoPilot::sendChanges() {
     sendCommand("hdg", _heading);
     _headingDirty = false;
   }
-  if (_headingHoldBtnPressedDirty) {
-    sendCommand("hdgHoldPressed", 1);
-    _headingHoldBtnPressedDirty = false;
+  if (_headingHoldBtn.isStateChanged() && _headingHoldBtn.isPressed()) {
+    sendCommand(_headingHoldBtn.getName(), 1);
   }
-  if (_headingSelectBtnPressedDirty) {
-    sendCommand("hdgSelectPressed", 1);
-  _headingSelectBtnPressedDirty = false;
+  _headingHoldBtn.clearStateChanged();
+  
+  if (_headingSelectBtn.isStateChanged() && _headingSelectBtn.isPressed()) {
+    sendCommand(_headingSelectBtn.getName(), 1);
   }
+  _headingSelectBtn.clearStateChanged();
 }
 
 void AutoPilot::sendCommand(const char * name, const long value) {
@@ -229,17 +228,4 @@ void translateUnsignedIntToByteArray(unsigned int input, byte output[SR_BYTE_BUF
   }
 }
 
-
-void readPushBtnStateChanges(const byte & btnPin, boolean & buttonState, boolean & buttonStateDirty) {
-  byte state = digitalRead(btnPin);
-  if (state==LOW && !buttonState) {
-    // BTN pressed
-    buttonState = true;
-    buttonStateDirty = true;
-  }
-  else if (buttonState && state==HIGH) {
-    // BTN released
-    buttonState = false;
-  }
-}
 

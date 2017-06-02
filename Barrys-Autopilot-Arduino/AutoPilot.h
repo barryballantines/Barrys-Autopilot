@@ -2,6 +2,7 @@
 #define AUTOPILOT_H
 
 #include <Arduino.h>
+#include "PushButton.h"
 
 /**
  * This library encapsulates all A/P specific logic.
@@ -143,14 +144,15 @@ private:
     boolean _headingDirty = false;
 
     
+    // heading hold active LED
     boolean _headingHoldActive = false;
     boolean _headingHoldActiveDirty = false;
 
-    boolean _headingHoldBtnPressed = false;
-    boolean _headingHoldBtnPressedDirty = false;
+    // heading hold btn
+    PushButton _headingHoldBtn = PushButton();
 
-    boolean _headingSelectBtnPressed = false;
-    boolean _headingSelectBtnPressedDirty = false;
+    // heading select btn
+    PushButton _headingSelectBtn = PushButton();
     
     String _commandInput = "";
 
@@ -166,8 +168,6 @@ private:
     byte _headingEncoderPinA;
     byte _headingEncoderPinB;
     byte _headingDisplayDataPin; 
-    byte _headingSelectBtnPin;
-    byte _headingHoldBtnPin;
     byte _headingHoldLEDPin;
 
     // --- shift register control pins ---
